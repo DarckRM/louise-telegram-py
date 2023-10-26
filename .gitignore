@@ -3,3 +3,5 @@
 __pycache__
 
 # Local config file
+setting_dev.py
+setting_prod.py
