@@ -1,15 +1,20 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext, ContextTypes
 
+from src.handler.yande import YandeHandler
+
 class BaseHandler():
   
   def __init__(self) -> None:
-    pass
+    self.yande = YandeHandler()
 
   async def menu_callback(self, update: Update, ctx: CallbackContext):
     query = update.callback_query
     await query.answer()
     await query.edit_message_text(text=f"选择的值: {query.data}")
+
+    if query.data == 'yande':
+      await self.yande.yande(update, ctx)   
 
   async def start(self, update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     '''Response command start'''
