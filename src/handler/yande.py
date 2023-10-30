@@ -9,21 +9,25 @@ from src.logic.yande import YandeService
 
 
 class YandeHandler():
-  def __init__(self) -> None:
-    self.filter_yande = filters.Regex('yande')
-    self.http = urllib3.PoolManager()
-    self.yande_service = YandeService()
+    def __init__(self) -> None:
+        self.filter_yande = filters.Regex('yande')
+        self.http = urllib3.PoolManager()
+        self.yande_service = YandeService()
 
-  async def yande(self, update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    '''Handle yande command''' 
-    text = 'Louise 开始请求图片咯'
+    async def yande(self, update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+        '''Handle yande command'''
+        text = 'Louise 开始请求图片咯'
 
-    photos: List[InputMediaPhoto] = []
-    for photo_bytes in self.yande_service.get_random_setu():
-      photos.append(InputMediaPhoto(photo_bytes))
+        photos: List[InputMediaPhoto] = []
+        for photo_bytes in self.yande_service.get_random_setu():
+            photos.append(InputMediaPhoto(photo_bytes))
 
-    try:
-      await ctx.bot.send_message(chat_id=update.effective_chat.id, text=text)
-      await ctx.bot.send_media_group(chat_id=update.effective_chat.id, media=photos)
-    except Exception as e:
-      pass
+        try:
+            await ctx.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            await ctx.bot.send_media_group(chat_id=update.effective_chat.id, media=photos)
+        except Exception as e:
+            pass
+        
+    async def yande_search(self, update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+        '''Handle yande search command'''
+        

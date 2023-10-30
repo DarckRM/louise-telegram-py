@@ -5,7 +5,7 @@ from conf.setting_prod import SETTING_PROD
 
 
 SETTING: Dict[str, Any] = {
-  "setting.env": "prod",
+  "setting.env": "dev",
   # Configuration for telegram
   "telegram.token": "",
   "telegram.proxy.host": "127.0.0.1",
