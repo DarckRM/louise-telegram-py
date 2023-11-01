@@ -1,10 +1,10 @@
 import traceback
 
 from typing import List
-from peewee import MySQLDatabase, IntegerField, Model, CharField
+from peewee import DoesNotExist, MySQLDatabase, IntegerField, Model, CharField
 
 from conf.setting import SETTING
-from src.model.model import BooruTags
+from src.model.model import BooruTag
 from src.util.log import Log
 
 
@@ -40,13 +40,34 @@ class LousieDatabase():
             self.db.connect()
         except Exception as e:
             self.log.error(f"无法连接至基础数据库: {e}\n{traceback.format_exc()}")
+    
+    def get_booru_tag(self, cn_name: str) -> BooruTag:
+        try:
+            b: DbBooruTags = DbBooruTags.get(
+                DbBooruTags.cn_name == cn_name
+            )
+            if b:
+                return BooruTag(
+                    tag_id=b.tag_id,
+                    origin_name=b.origin_name,
+                    cn_name=b.cn_name,
+                    alter_name=b.alter_name,
+                    producer=b.producer,
+                    info=b.info
+                )
+        except DoesNotExist as e:
+            self.log.warn(f"获取 booru_tag 记录不存在: {cn_name}") 
+            return None
+        except Exception as e:
+            self.log.error(f"获取 booru_tag 记录异常: {e}\n{traceback.format_exc()}")
+            return None
 
-    def demo(self) -> List[BooruTags]:
-        booru_tags: List[BooruTags] = []
+    def list_booru_tag(self) -> List[BooruTag]:
+        booru_tags: List[BooruTag] = []
         try:
             db_booru_tags: List[DbBooruTags] = DbBooruTags.select()
             for d in db_booru_tags:
-                booru_tags.append(BooruTags(
+                booru_tags.append(BooruTag(
                     tag_id=d.tag_id,
                     origin_name=d.origin_name,
                     cn_name=d.cn_name,
@@ -70,4 +91,5 @@ def get_database() -> LousieDatabase:
 
 if __name__ == '__main__':
     louise = get_database()
-    louise.demo()
+    result = louise.get_booru_tag('神里绫华')
+    print(result)

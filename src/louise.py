@@ -14,7 +14,7 @@ class Louise():
 
   def __init__(self):
     self.log: Log = Log(self)
-    proxy = 'http://' + SETTING['telegram.proxy.host'] + SETTING['telegram.proxy.port']
+    proxy = 'http://' + SETTING['proxy.host'] + SETTING['proxy.port']
     if SETTING["setting.env"] == 'dev':
       self.bot: Application = ApplicationBuilder().token(SETTING['telegram.token']).proxy_url(proxy).get_updates_proxy_url(proxy).build()
     else:

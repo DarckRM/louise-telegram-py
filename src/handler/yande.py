@@ -30,4 +30,15 @@ class YandeHandler():
         
     async def yande_search(self, update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         '''Handle yande search command'''
-        
+        text = 'Louise 开始搜索图片咯'
+
+        photos: List[InputMediaPhoto] = []
+        for photo_bytes in self.yande_service.search_yande_image(['萝莉']):
+            photos.append(InputMediaPhoto(photo_bytes))
+        # photos.append(InputMediaPhoto("http://lights.rmdarck.icu/img/paimon_and_lumine.png"))
+
+        try:
+            await ctx.bot.send_message(chat_id=update.effective_chat.id, text=text)
+            await ctx.bot.send_media_group(chat_id=update.effective_chat.id, media=photos)
+        except Exception as e:
+            pass

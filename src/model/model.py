@@ -1,4 +1,4 @@
-class BooruTags():
+class BooruTag():
     def __init__(self, tag_id: int, origin_name: str, cn_name: str, alter_name: str, producer: str, info: str) -> None:
         self.tag_id: int = tag_id
         self.origin_name: str = origin_name
